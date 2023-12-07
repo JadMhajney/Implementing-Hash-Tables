@@ -3,17 +3,20 @@ import java.lang.Math;
 
 public class AQPHashTable extends OAHashTable {
 	private long p;
+	ModHash h;
 	public AQPHashTable(int m, long p) {
 		super(m);
 		this.p=p;
+		this.h=ModHash.GetFunc(m,p);
 	}
 	
 	@Override
 	public int Hash(long x, int i) {
-		ModHash h=ModHash.GetFunc(this.m, this.p);
 		if (i%2==0) {
-			return (int) (h.Hash(x)+i*i)%this.m;
+			return Math.floorMod((h.Hash(x)+i*i), m);
 		}
-		return (int) (h.Hash(x)-Math.pow(i, 2))%this.m;
+		return Math.floorMod((h.Hash(x)-i*i), m);
+
+		
 	}
 }
